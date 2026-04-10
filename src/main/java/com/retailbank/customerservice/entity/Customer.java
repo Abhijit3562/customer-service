@@ -1,6 +1,9 @@
 package com.retailbank.customerservice.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -10,9 +13,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(
-        name = "Customers"
+        name = "Customers",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"email"})
+        }
 )
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
@@ -42,19 +50,19 @@ public class Customer {
     )
     private LocalDateTime createdAt;
 
-}
-
-enum CustomerStatus {
-
-    INITIATED("Initiated"),
-    DOC_UPLOADED("Document Uploaded"),
-    UNDER_REVIEW("Under Review"),
-    VERIFIED("Verified"),
-    REJECTED("Rejected");
-
-    public final String value;
-
-    CustomerStatus(String value) {
-        this.value = value;
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", dob=" + dob +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
     }
+
 }
+
